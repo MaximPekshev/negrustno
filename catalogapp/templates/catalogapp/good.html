@@ -1,0 +1,173 @@
+{% extends 'baseapp/index.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="breadcrumb-area gray-bg">
+	<div class="container">
+		<div class="breadcrumb-content">
+			<ul>
+				<li><a href="{% url 'show_index' %}">Главная</a></li>
+				<li><a href="{% url 'show_catalog' %}">Каталог</a></li>
+				<li class="active">{{ good.title }}</li>
+			</ul>
+		</div>
+	</div>
+</div>
+<div class="product-details pt-75 pb-65">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-6 col-md-12">
+				<div class="product-details-img">
+					{% if good.get_main_picture %}
+					<img class="zoompro" src="{{ good.get_main_picture.images.url }}" data-zoom-image="{{ good.get_main_picture.images.url }}" alt="zoom"/>
+					{% else %}
+					<img class="zoompro" src="{% static 'img/product-details/product-detalis-l2.jpg' %}" data-zoom-image="{% static 'img/product-details/product-detalis-bl1.jpg' %}" alt="zoom"/>
+					{% endif %}
+					<div id="gallery" class="mt-20 product-dec-slider owl-carousel">
+						{% for pict in good.get_pictures %}
+							<a data-image="{{ pict.images.url }}" data-zoom-image="{{ pict.images.url }}">
+							<img src="{{ pict.images.url }}" alt="" width="90" >
+							</a>
+						{% endfor %}
+					</div>
+					{% if good.old_price and good.get_discount_percent %}
+					<span>-{{ good.get_discount_percent }}%</span>
+					{% endif %}
+				</div>
+			</div>
+			<div class="col-lg-6 col-md-12">
+				<div class="product-details-content">
+					<h4>{{ good.title }}</h4>
+					<!-- <div class="rating-review">
+						<div class="pro-dec-rating">
+							<i class="ion-android-star-outline theme-star"></i>
+							<i class="ion-android-star-outline theme-star"></i>
+							<i class="ion-android-star-outline theme-star"></i>
+							<i class="ion-android-star-outline theme-star"></i>
+							<i class="ion-android-star-outline"></i>
+						</div>
+						<div class="pro-dec-review">
+							<ul>
+								<li>32 Reviews </li>
+								<li> Add Your Reviews</li>
+							</ul>
+						</div>
+					</div> -->
+					<div class="product-price-wrapper">
+					{% if good.old_price %}
+					<span style="font-size: 24px;font-weight: 500;">&#8381 {{ good.price }}</span>
+					<span class="product-price-old" style="font-size: 24px;font-weight: 500;">{{ good.old_price }} </span>
+					{% else %}
+					<span style="font-size: 24px;font-weight: 500;">&#8381 {% if good.price %}{{ good.price }}{% else %} 0 {% endif %}</span>
+					{% endif %}
+					</div>
+					<div class="in-stock" >
+						<p><span style="color: green;">{% if good.quantity > 0 %} В наличии {% else %} Нет в наличии {% endif %}</span></p>
+					</div>
+					<p>{{ good.description }}</p>
+					<div class="quality-add-to-cart">
+						<form id="quantityform" action="{% url 'cart_add_item' cpu_slug=good.cpu_slug %}" method="POST">
+							{% csrf_token %}
+							<div class="quality">
+								<label>Кол-во:</label>
+								<input class="cart-plus-minus-box" type="text" name="quantity" value="1" required>
+							</div>
+							<div class="shop-list-cart-wishlist">
+								<button type="submit" form="quantityform">
+									<a title="Add To Cart" style="margin: 0 0 0 0;">
+										<i class="icon-handbag"></i>
+									</a>
+								</button>
+								<a title="Wishlist" href="{% url 'wishlist_add_item' cpu_slug=good.cpu_slug %}" style="margin: 0 0 0 0;{% if good in wishlist.get_goods_in_wishlist %} background-color: red; {% endif %}">
+									<i class="icon-heart"></i>
+								</a>
+							</div>
+						</form>
+					</div>
+					{% if good.category %}
+					<div class="pro-dec-categories">
+						<ul>
+							<li class="categories-title">Категория:</li>
+							<li><a href="{% url 'show_category' cpu_slug=good.category.cpu_slug %}">{{ good.category }}</a></li>
+						</ul>
+					</div>
+					{% endif %}
+					{% if good.tags.all %}
+					<div class="pro-dec-categories">
+						<ul>
+							<li class="categories-title">Теги: </li>
+							{% for tag in good.tags.all %}
+								<li><a href="#">{{ tag }}</a></li>
+							{% endfor %}
+							
+						</ul>
+					</div>
+					{% endif %}
+					<!-- <div class="pro-dec-social">
+						<ul>
+							<li><a class="tweet" href="#"><i class="ion-social-twitter"></i> Tweet</a></li>
+							<li><a class="share" href="#"><i class="ion-social-facebook"></i> Share</a></li>
+							<li><a class="google" href="#"><i class="ion-social-googleplus-outline"></i> Google+</a></li>
+							<li><a class="pinterest" href="#"><i class="ion-social-pinterest"></i> Pinterest</a></li>
+						</ul>
+					</div> -->
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="product-area pb-70">
+	<div class="container">
+		<div class="product-top-bar section-border mb-35">
+			<div class="section-title-wrap">
+				<h3 class="section-title section-bg-white">С этим товаром обычно покупают</h3>
+			</div>
+		</div>
+		<div class="featured-product-active hot-flower owl-carousel product-nav">
+			{% for item in related_goods %}
+			<div class="product-wrapper">
+				<div class="product-img" align="center">
+					<a href="{% url 'show_good' cpu_slug=item.cpu_slug %}">
+						{% if item.get_main_picture %}
+						<img alt="" src="{{ item.get_main_picture.images.url }}">
+						{% else %}
+						<img alt="" src="{% static 'img/product/product-1.jpg' %}">
+						{% endif %}
+					</a>
+					{% if item.old_price and item.get_discount_percent %}
+					<span>-{{ item.get_discount_percent }}%</span>
+					{% endif %}
+					<div class="shop-list-cart-wishlist pt-20">
+						<form id="quantityform{{ item.cpu_slug }}" action="{% url 'cart_add_item' cpu_slug=item.cpu_slug %}" method="POST">
+							{% csrf_token %}
+							<input type="text" name="quantity" value="1" required hidden>
+							<a {% if item in wishlist.get_goods_in_wishlist %} style="background-color: red;" {% endif %} href="{% url 'wishlist_add_item' cpu_slug=item.cpu_slug %}" title="В избранное"><i class="icon-heart"></i></a>
+							<button type="submit" form="quantityform{{ item.cpu_slug }}">
+								<a style="margin: 0 0 0 0;" title="В корзину"><i class="icon-handbag"></i></a>
+							</button>
+						</form>
+					</div>
+				</div>
+				<div class="product-content text-center">
+					<h4>
+						<a href="{% url 'show_good' cpu_slug=item.cpu_slug %}">{{ item.title }}</a>
+					</h4>
+					<div class="product-price-wrapper">
+						{% if item.old_price %}
+						<span>&#8381 {{ item.price }}</span>
+						<span class="product-price-old">&#8381 {{ item.old_price }} </span>
+						{% else %}
+						<span>&#8381 {% if item.price %}{{ item.price }}{% else %} 0 {% endif %}</span>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+</div>
+{% endblock %}

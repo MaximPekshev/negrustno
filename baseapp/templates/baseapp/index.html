@@ -1,0 +1,221 @@
+{% extends 'baseapp/base.html' %}
+
+
+{% load static %}
+
+{% block body %}
+<!-- header start -->
+<header class="header-area clearfix">
+	<div class="header-top">
+		<div class="container">
+			<div class="border-bottom-1">
+				<div class="row">
+					<div class="col-lg-4 col-md-4 col-12">
+						<div class="welcome-area">
+							<p>Интернет магазин игрушек и развлечений</p>
+						</div>
+					</div>
+					<div class="col-lg-8 col-md-8 col-12">
+						<div class="account-curr-lang-wrap f-right">
+							<ul>
+								<li class="top-hover"><a href="{% url 'show_wishlist' %}">Избранное</a>
+								</li>
+								<li class="top-hover"><a href="#">Войти</a>
+								</li>
+								<li><a href="#">Регистрация</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="header-bottom transparent-bar">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-3 col-md-4 col-6">
+					<div class="logo">
+						<a href="{% url 'show_index' %}">
+							<img alt="" src="{% static 'img/logo/logo.png' %}">
+						</a>
+					</div>
+				</div>
+				<div class="col-lg-9 col-md-8 col-6">
+					<div class="header-bottom-right">
+						<div class="main-menu">
+							<nav>
+								<ul>
+									<li><a href="{% url 'show_index' %}">Главная</a></li>
+									<li><a href="#">about</a></li>
+									<li><a href="{% url 'show_catalog' %}">Каталог</a></li>
+									<li><a href="#">Контакты</a></li>
+								</ul>
+							</nav>
+						</div>
+						<div class="header-cart">
+							<a href="{% url 'show_cart' %}">
+								<div class="cart-icon">
+									<i class="ion-bag"></i>
+									<span class="count-style">{% if cart.get_cart_count %}{{ cart.get_cart_count }}{% else %}0{% endif %}</span>
+								</div>
+								<div class="cart-text">
+									<span class="digit">Корзина</span>
+									<span>&#8381 {{ cart.summ }}</span>
+								</div>
+							</a>
+							{% if cart.get_all_cart_items %}
+							<div class="shopping-cart-content">
+								<ul>
+									{% for item in cart.get_all_cart_items %}
+									<li class="single-shopping-cart">
+										<div class="shopping-cart-img">
+											<a href="{% url 'show_good' cpu_slug=item.good.cpu_slug %}"><img  width="90" alt="" src="{{ item.good.get_main_picture.images.url }}"></a>
+										</div>
+										<div class="shopping-cart-title">
+											<h4><a href="{% url 'show_good' cpu_slug=item.good.cpu_slug %}">{{ item.good.title }}</a></h4>
+											<h6>Кол-во: {{ item.quantity }}</h6>
+											<span>&#8381 {{ item.price }}</span>
+										</div>
+										<div class="shopping-cart-delete">
+											<a href="{% url 'cart_del_item' cpu_slug=item.good.cpu_slug %}"><i class="ion ion-close"></i></a>
+										</div>
+									</li>
+									{% endfor %}
+								</ul>
+								<div class="shopping-cart-total">
+									<h4>Total : <span class="shop-total">&#8381 {{ cart.summ }}</span></h4>
+								</div>
+								<div class="shopping-cart-btn">
+									<a href="{% url 'show_cart' %}">Корзина</a>
+									<a href="#">Оформить заказ</a>
+								</div>
+							</div>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="mobile-menu-area">
+				<div class="mobile-menu">
+					<nav id="mobile-menu-active">
+						<ul class="menu-overflow">
+							<li><a href="{% url 'show_index' %}">Главная</a></li>
+							<li><a href="#">About</a></li>
+							<li><a href="{% url 'show_catalog' %}">Каталог</a></li>
+							<li><a href="#">Contact</a></li>
+						</ul>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</div>
+</header>
+
+
+
+{% block content %}
+{% endblock %}
+
+
+<footer class="footer-area pt-58 gray-bg-3">
+	<div class="footer-top gray-bg-3 pb-20">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-4 col-md-6 col-sm-6">
+					<div class="footer-widget footer-widget-red footer-black-color mb-40">
+						<div class="footer-title mb-30">
+							<h4>About Us</h4>
+						</div>
+						<div class="footer-about">
+							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit sed do eiusmod tempor incididun</p>
+							<div class="footer-contact mt-20">
+								<ul>
+									<li>Address: 123 Main Street, Anytown, CA 12345 - USA.</li>
+									<li>Telephone: (012) 800 456 789-987 </li>
+									<li>Email: <a href="#">yourmail@example.com</a></li>
+								</ul>
+							</div>
+						</div>
+						<div class="social-icon">
+							<ul>
+								<li><a class="facebook" href="#"><i class="ion-social-facebook"></i></a></li>
+								<li><a class="twitter" href="#"><i class="ion-social-twitter"></i></a></li>
+								<li><a class="instagram" href="#"><i class="ion-social-instagram-outline"></i></a></li>
+								<li><a class="googleplus" href="#"><i class="ion-social-googleplus-outline"></i></a></li>
+								<li><a class="rss" href="#"><i class="ion-social-rss"></i></a></li>
+								<li><a class="dribbble" href="#"><i class="ion-social-dribbble-outline"></i></a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-2 col-md-6 col-sm-6">
+					<div class="footer-widget mb-40">
+						<div class="footer-title mb-30">
+							<h4>Information</h4>
+						</div>
+						<div class="footer-content">
+							<ul>
+								<li><a href="about-us.html">About Us</a></li>
+								<li><a href="#">Delivery Information</a></li>
+								<li><a href="#">Privacy Policy</a></li>
+								<li><a href="#">Terms & Conditions</a></li>
+								<li><a href="#">Customer Service</a></li>
+								<li><a href="#">Return Policy</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-2 col-md-6 col-sm-6">
+					<div class="footer-widget mb-40">
+						<div class="footer-title mb-30">
+							<h4>My Account</h4>
+						</div>
+						<div class="footer-content">
+							<ul>
+								<li><a href="my-account.html">My Account</a></li>
+								<li><a href="about-us.html">Order History</a></li>
+								<li><a href="wishlist.html">WishList</a></li>
+								<li><a href="#">Newsletter</a></li>
+								<li><a href="about-us.html">Order History</a></li>
+								<li><a href="#">International Orders</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-6 col-sm-6">
+					<div class="footer-widget mb-40">
+						<div class="footer-title mb-30">
+							<h4>Join Our Newsletter Now</h4>
+						</div>
+						<div class="footer-newsletter">
+							<p>Get E-mail updates about our latest shop and special offers.</p>
+							<div id="mc_embed_signup" class="subscribe-form">
+								<form action="" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+									<div id="mc_embed_signup_scroll" class="mc-form">
+										<input type="email" value="" name="EMAIL" class="email" placeholder="Your Email Address..." required>
+										<!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+										<div class="mc-news" aria-hidden="true"><input type="text" name="b_6bbb9b6f5827bd842d9640c82_05d85f18ef" tabindex="-1" value=""></div>
+										<div class="clear-2"><input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button"></div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="footer-bottom pb-25 pt-25 gray-bg-2">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="copyright" align="center">
+						<p>Copyright © <a href="{% url 'show_index' %}">NEGRUSTNO</a>. All Right Reserved.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>
+{% endblock %}

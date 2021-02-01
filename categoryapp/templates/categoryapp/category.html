@@ -1,0 +1,212 @@
+{% extends 'baseapp/index.html' %}
+
+{% load static %}
+
+{% block content %}
+{% if not category.have_a_childs %}
+<div class="breadcrumb-area gray-bg">
+	<div class="container">
+		<div class="breadcrumb-content">
+			<ul>
+				<li><a href="{% url 'show_index' %}">Главная</a></li>
+				<li><a href="{% url 'show_catalog' %}">Каталог</a></li>
+				<li><a href="{% url 'show_category_list' %}">Категории</a></li>
+				{% if category.parent_category %}
+				<li><a href="{% url 'show_category' cpu_slug=category.parent_category.cpu_slug %}">{{ category.parent_category }}</a></li>
+				{% endif %}
+				<li class="active">{{ category.title }}</li>
+			</ul>
+		</div>
+	</div>
+</div>
+<div class="shop-page-area pt-75 pb-75">
+	<div class="container">
+		<div class="row flex-row-reverse">
+			<div class="col-lg-9">
+				<div class="shop-topbar-wrapper">
+					<div class="shop-topbar-left">
+						<p>Найдено товаров - {{ goods_count }}</p>
+					</div>
+				</div>
+				<div class="grid-list-product-wrapper">
+					<div class="product-grid product-view pb-20">
+						<div class="row">
+							{% for good in page_object.object_list %}
+							<div class="product-width col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-30">
+								<div class="product-wrapper" align="center">
+									<div class="product-img">
+										<a href="{% url 'show_good' cpu_slug=good.cpu_slug %}">
+											{% if good.get_pictures %}
+											<img alt="" src="{{ good.get_pictures.first.images.url }}">
+											{% else %}
+											<img alt="" src="{% static 'img/product/product-1.jpg' %}">
+											{% endif %}
+										</a>
+										{% if good.old_price and good.get_discount_percent %}
+										<span>-{{ good.get_discount_percent }}%</span>
+										{% endif %}
+
+									</div>
+									<div class="shop-list-cart-wishlist pt-20">
+											<form id="quantityform{{ good.cpu_slug }}" action="{% url 'cart_add_item' cpu_slug=good.cpu_slug %}" method="POST">
+												{% csrf_token %}
+												<input type="text" name="quantity" value="1" required hidden>
+												<a {% if good in wishlist.get_goods_in_wishlist %} style="background-color: red;" {% endif  %} href="{% url 'wishlist_add_item' cpu_slug=good.cpu_slug %}" title="В избранное"><i class="icon-heart"></i></a>
+												<button type="submit" form="quantityform{{ good.cpu_slug }}">
+													<a style="margin: 0 0 0 0;" title="В корзину"><i class="icon-handbag"></i></a>
+												</button>
+											</form>
+									</div>
+									<div class="product-content text-center">
+										<h4>
+											<a href="{% url 'show_good' cpu_slug=good.cpu_slug %}">{{ good.title }}</a>
+										</h4>
+										<div class="product-price-wrapper">
+											{% if good.old_price %}
+											<span>&#8381 {{ good.price }}</span>
+											<span class="product-price-old">&#8381 {{ good.old_price }} </span>
+											{% else %}
+											<span>&#8381 {% if good.price %}{{ good.price }}{% else %} 0 {% endif %}</span>
+											{% endif %}
+										</div>
+									</div>
+								</div>
+							</div>
+							{% endfor %}
+						</div>
+					</div>
+					{{ page_number }}
+					<div class="pagination-total-pages">
+						<div class="pagination-style">
+							<ul>
+								<li><a {% if not prev_url %} style="pointer-events: none;" {% endif %} class="prev-next prev" href="{{ prev_url }}"><i class="ion-ios-arrow-left"></i> Prev</a></li>
+
+								{% for n in page_object.paginator.page_range %}
+                				{% if page_object.number == n %}
+								<li>
+									<a class="active" href="?page={{ n }}">{{ n }}</a>
+								</li>
+								{% elif n > page_object.number|add:-3 and n < page_object.number|add:3 %}
+								<li>
+									<a href="?page={{ n }}">{{ n }}</a>
+								</li>
+								{% endif %}
+            					{% endfor %}
+            					<li><a>...</a></li>
+                                <li><a href="{{ last_url }}">{{ last_page }}</a></li>
+								<li><a {% if not next_url %} style="pointer-events: none;" {% endif %} class="prev-next next" href="{{ next_url }}">Next<i class="ion-ios-arrow-right"></i> </a></li>
+							</ul>
+						</div>
+						<div class="total-pages">
+							<p>Найдено товаров - {{ goods_count }}</p>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+			<div class="col-lg-3">
+				<div class="shop-sidebar-wrapper gray-bg-7 shop-sidebar-mrg">
+					<div class="shop-widget">
+						<h4 class="shop-sidebar-title"><a href="{% url 'show_category_list' %}">Категории</a></h4>
+						<div class="shop-catigory">
+							<ul id="faq">
+
+								{% for cat in categories %}
+								<li> <a data-toggle="collapse" data-parent="#faq" href="#shop-category-{{ cat.id }}">{{ cat.title }} <i class="ion-ios-arrow-down"></i></a>
+									<ul id="shop-category-{{ cat.id }}" class="panel-collapse collapse">
+										{% for category in cat.get_childs_cat %}
+										{% if category.get_childs_count %}
+										<li><a href="{% url 'show_category' cpu_slug=category.cpu_slug %}">{{ category.title }} {{ category.get_childs_count }}</a></li>
+										{% endif %}
+										{% endfor %}
+									</ul>
+								</li>
+								{% endfor %}
+
+								{% for item in cat_with_no_parents_and_no_childs %}
+								{% if item.get_childs_count %}
+								<li> <a href="{% url 'show_category' cpu_slug=item.cpu_slug %}">{{ item.title }} {{ item.get_childs_count }}</a> </li>
+								{% endif %}
+								{% endfor %}
+							</ul>
+						</div>
+					</div>
+					<div class="shop-widget mt-40 shop-sidebar-border pt-35">
+						<h4 class="shop-sidebar-title">Производители</h4>
+						<div class="sidebar-list-style mt-20">
+							<ul>
+								{% for manufacturer in manufacturers %}
+								<li><input type="checkbox">{{ manufacturer.title }}</li>
+								{% endfor %}
+							</ul>
+						</div>
+					</div>
+					<div class="shop-widget mt-40 shop-sidebar-border pt-35">
+						<h4 class="shop-sidebar-title">Популярные теги</h4>
+						<div class="shop-tags mt-25">
+							<ul>
+								{% for tag in tags %}
+								<li><a href="#">{{ tag.title }}</a></li>
+								{% endfor %}
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% else %}
+<div class="breadcrumb-area gray-bg">
+	<div class="container">
+		<div class="breadcrumb-content">
+			<ul>
+				<li><a href="{% url 'show_index' %}">Главная</a></li>
+				<li><a href="{% url 'show_catalog' %}">Каталог</a></li>
+				<li><a href="{% url 'show_category_list' %}">Категории</a></li>
+				<li class="active">{{ category.title }}</li>
+			</ul>
+		</div>
+	</div>
+</div>
+<div class="shop-page-area pt-75 pb-75">
+	<div class="container">
+		<div class="row flex-row-reverse">
+			<div class="col-lg-12">
+				<div class="shop-topbar-wrapper">
+					<div class="shop-topbar-left">
+						<p></p>
+					</div>
+				</div>
+				<div class="grid-list-product-wrapper">
+					<div class="product-grid product-view pb-20">
+						<div class="row">
+							{% for cat in category.get_childs_cat %}
+							<div class="product-width col-xl-3 col-lg-3 col-md-3 col-sm-4 col-6 mb-30">
+								<div class="product-wrapper" align="center">
+									<div class="product-img">
+										<a href="{% url 'show_category' cpu_slug=cat.cpu_slug %}">
+											{% if cat.picture %}
+											<img alt="" src="{{ cat.picture.url }}">
+											{% else %}
+											<img alt="" src="{% static 'img/product/product-1.jpg' %}">
+											{% endif %}
+										</a>
+									</div>
+									<div class="product-content text-center">
+										<h4>
+											<a href="{% url 'show_category' cpu_slug=cat.cpu_slug %}">{{ cat.title }} {{ cat.get_childs_count }}</a>
+										</h4>
+									</div>
+								</div>
+							</div>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endif %}
+{% endblock %}

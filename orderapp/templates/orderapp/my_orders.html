@@ -1,0 +1,132 @@
+{% extends 'baseapp/index.html' %}
+
+
+{% block content %}
+<div class="breadcrumb-area gray-bg">
+	<div class="container">
+		<div class="breadcrumb-content">
+			<ul>
+				<li><a href="{% url 'show_index' %}">Главная</a></li>
+				<li class="active">Мои заказы</li>
+			</ul>
+		</div>
+	</div>
+</div>
+<div class="checkout-area pb-45 pt-10">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="panel-body">
+					<div class="order-review-wrapper">
+						<div class="order-review">
+							<div class="table-responsive">
+								<table class="table">
+									<thead>
+										<tr>
+											<th class="width-1">Дата</th>
+											<th class="width-2">Номер</th>
+											<th class="width-3">Количество товаров</th>
+											<th class="width-4">Сумма</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>
+												<div class="o-pro-dec">
+													<p>Fusce aliquam</p>
+												</div>
+											</td>
+											<td>
+												<div class="o-pro-price">
+													<p>$236.00</p>
+												</div>
+											</td>
+											<td>
+												<div class="o-pro-qty">
+													<p>2</p>
+												</div>
+											</td>
+											<td>
+												<div class="o-pro-subtotal">
+													<p>$236.00</p>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<div class="o-pro-dec">
+													<p>Primis in faucibus</p>
+												</div>
+											</td>
+											<td>
+												<div class="o-pro-price">
+													<p>$265.00</p>
+												</div>
+											</td>
+											<td>
+												<div class="o-pro-qty">
+													<p>3</p>
+												</div>
+											</td>
+											<td>
+												<div class="o-pro-subtotal">
+													<p>$265.00</p>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<div class="o-pro-dec">
+													<p>Etiam gravida</p>
+												</div>
+											</td>
+											<td>
+												<div class="o-pro-price">
+													<p>$363.00</p>
+												</div>
+											</td>
+											<td>
+												<div class="o-pro-qty">
+													<p>2</p>
+												</div>
+											</td>
+											<td>
+												<div class="o-pro-subtotal">
+													<p>$363.00</p>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<div class="o-pro-dec">
+													<p>Quisque in arcu</p>
+												</div>
+											</td>
+											<td>
+												<div class="o-pro-price">
+													<p>$328.00</p>
+												</div>
+											</td>
+											<td>
+												<div class="o-pro-qty">
+													<p>2</p>
+												</div>
+											</td>
+											<td>
+												<div class="o-pro-subtotal">
+													<p>$328.00</p>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>                 	
+{% endblock %}
