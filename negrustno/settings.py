@@ -11,7 +11,7 @@ SECRET_KEY = config('SECRET_KEY')
 
 DEBUG = config('DEBUG', cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['negrustno.ru', 'www.negrustno.ru', 'localhost']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
