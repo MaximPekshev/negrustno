@@ -5,6 +5,16 @@ from .models import cart_calculate_summ
 from django.db.models import Sum
 from decimal import Decimal
 
+def test(request):
+
+	if request.user.is_authenticated:
+		cart 		= Cart.objects.filter(user = request.user).last()
+	else:
+		cart_id 	= request.session.get("cart_id")	
+		cart 		= Cart.objects.filter(id = cart_id).last()
+
+	return cart
+
 def get_cart(request):
 
 	if request.user.is_authenticated:
