@@ -18,12 +18,19 @@
 					<div class="col-lg-8 col-md-8 col-12">
 						<div class="account-curr-lang-wrap f-right">
 							<ul>
+								{% if user.is_authenticated %}
 								<li class="top-hover"><a href="{% url 'show_wishlist' %}">Избранное</a>
 								</li>
-								<li class="top-hover"><a href="#">Войти</a>
+								<li class="top-hover"><a href="{% url 'show_profile' %}">Привет, {% if buyer %} {{ buyer.first_name }} {% else %} {{ user }} {% endif %}!</a>
 								</li>
-								<li><a href="#">Регистрация</a>
+								<li><a href="{% url 'account_logout' %}">Выйти</a>
 								</li>
+								{% else %}
+								<li><a href="{% url 'account_login' %}">Авторизация</a>
+								</li>
+								<li><a href="{% url 'account_signup' %}">Регистрация</a>
+								</li>
+								{% endif %}
 							</ul>
 						</div>
 					</div>
@@ -37,7 +44,8 @@
 				<div class="col-lg-3 col-md-4 col-6">
 					<div class="logo">
 						<a href="{% url 'show_index' %}">
-							<img alt="" src="{% static 'img/logo/logo.png' %}">
+							<!-- <img alt="" src="{% static 'img/logo/logo.png' %}"> -->
+							<img alt="" width="150" src="{% static 'img/logo.png' %}">
 						</a>
 					</div>
 				</div>
@@ -47,8 +55,10 @@
 							<nav>
 								<ul>
 									<li><a href="{% url 'show_index' %}">Главная</a></li>
-									<li><a href="#">about</a></li>
 									<li><a href="{% url 'show_catalog' %}">Каталог</a></li>
+									<li><a href="#">Оплата</a></li>
+									<li><a href="#">Доставка</a></li>
+									<li><a href="#">О нас</a></li>
 									<li><a href="#">Контакты</a></li>
 								</ul>
 							</nav>
@@ -101,9 +111,11 @@
 					<nav id="mobile-menu-active">
 						<ul class="menu-overflow">
 							<li><a href="{% url 'show_index' %}">Главная</a></li>
-							<li><a href="#">About</a></li>
 							<li><a href="{% url 'show_catalog' %}">Каталог</a></li>
-							<li><a href="#">Contact</a></li>
+							<li><a href="#">Оплата</a></li>
+							<li><a href="#">Доставка</a></li>
+							<li><a href="#">О нас</a></li>
+							<li><a href="#">Контакты</a></li>
 						</ul>
 					</nav>
 				</div>

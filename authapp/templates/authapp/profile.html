@@ -1,0 +1,88 @@
+{% extends 'baseapp/index.html' %}
+
+{% block content %}
+<div class="breadcrumb-area gray-bg">
+	<div class="container">
+		<div class="breadcrumb-content">
+			<ul>
+				<li><a href="{% url 'show_index' %}">На главную</a></li>
+				<li class="active"> Личный кабинет </li>
+			</ul>
+		</div>
+	</div>
+</div>
+<div class="checkout-area pb-55 pt-30">
+	<div class="container">
+		<div class="row">
+			<div class="ml-auto mr-auto col-lg-9">
+				<div class="login-register-tab-list nav">
+					<a>
+						<h4> Добро пожаловать </h4>
+					</a>
+				</div>
+				<div class="checkout-wrapper">
+					<div id="faq" class="panel-group">
+						<div class="panel panel-default">
+							<div id="my-account-1" class="panel-collapse collapse show">
+								<div class="panel-body">
+									<div class="billing-information-wrapper">
+										<div class="account-info-wrapper">
+											<h4>Вы авторизовались как {% if buyer %}{{ buyer.first_name }} {{ buyer.last_name }}{% else %} {{ user }} {% endif %}</h4>
+											<h5><a style="color: red;" href="{% url 'account_password_change' %}">Сменить пароль</a></h5>
+										</div>
+										<p></p>
+										{% if buyer %}
+										<form action="{% url 'profile_change' buyer_id=buyer.id %}" method="POST">
+										{% else %}
+										<form action="{% url 'profile_add' %}" method="POST">
+										{% endif %}
+											{% csrf_token %}
+											<div class="row">
+												<div class="col-lg-6 col-md-6">
+													<div class="billing-info">
+														<label>Имя</label>
+														<input type="text" name="input_first_name" placeholder="Имя" value="{% if buyer %} {{ buyer.first_name }}{% endif %}" required>
+													</div>
+												</div>
+												<div class="col-lg-6 col-md-6">
+													<div class="billing-info">
+														<label>Фамилия</label>
+														<input type="text" name="input_second_name" placeholder="Фамилия" value="{% if buyer %} {{ buyer.last_name }}{% endif %}" required>
+													</div>
+												</div>
+												<div class="col-lg-6 col-md-6">
+													<div class="billing-info">
+														<label>Email</label>
+														<input type="email" disabled value="{{ user.email }}" placeholder="Email">
+													</div>
+												</div>
+												<div class="col-lg-6 col-md-6">
+													<div class="billing-info">
+														<label>Телефон</label>
+														<input id="phoneInput" type="text" name="input_phone" placeholder="Номер телефона" value="{% if buyer %} {{ buyer.phone }}{% endif %}">
+													</div>
+												</div>
+												<div class="col-lg-6 col-md-6">
+												</div>
+											</div>
+											<div class="billing-back-btn">
+												<div class="billing-back">
+                                                        <a href="#">История заказов</a>
+                                                    </div>
+												<div class="billing-btn">
+													<button><a href="{% url 'account_logout' %}" >Выйти</a></button>
+													<button type="submit">Сохранить изменения</button>
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>                                    
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends 'baseapp/index.html' %}
+
+{% load static %}
+
+{% load i18n %}
+
+{% block content %}
+<div class="breadcrumb-area gray-bg">
+	<div class="container">
+		<div class="breadcrumb-content">
+			<ul>
+				<li><a href="{% url 'show_index' %}">На главную</a></li>
+				<li class="active"> Регистрация </li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<div class="login-register-area pt-70 pb-75">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-7 col-md-12 ml-auto mr-auto">
+				<div class="login-register-wrapper">
+					<div class="login-register-tab-list nav">
+						<a>
+							<h4> Регистрация </h4>
+						</a>
+					</div>
+					<div class="tab-content">
+						<div class="login-form-container">
+							<div class="button-box">
+								<div class="login-toggle-btn mb-20">
+									<a href="{% url 'account_login' %}">Уже есть учетная запись?</a>
+								</div>
+							</div>
+							<div class="login-register-form">
+								<form action="{% url 'account_signup' %}" method="post">
+									{% csrf_token %}
+
+									{{ form.non_field_errors }}
+
+									{% for error in form.email.errors %}
+									<p  style="color: red">* {{ error|escape }}</p>
+									{% endfor %}
+									<input name="email" placeholder="Email" type="email" required id="id_email">
+
+									{% for error in form.username.errors %}
+									<p  style="color: red">* {{ error|escape }}</p>
+									{% endfor %}
+									<p>
+										<input type="text" name="username" placeholder="Имя пользователя" autofocus="autofocus" minlength="1" maxlength="150" required id="id_username">
+
+										{% for error in form.password1.errors %}
+										{% if forloop.first %}
+										<p  style="color: red">* {{ error|escape }}</p>
+										{% endif %}
+										{% endfor %}
+
+										<input type="password" name="password1" placeholder="Пароль" required id="id_password1">
+
+										{% for error in form.password2.errors %}
+										{% if forloop.first %}
+										<p  style="color: red">* {{ error|escape }}</p>
+										{% endif %}
+										{% endfor %}
+
+										<input type="password" name="password2" placeholder="Пароль (еще раз)" required id="id_password2">
+
+										{% if redirect_field_value %}
+										<input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}">
+										{% endif %}
+										{% for message in form.name_of_field.errors %}
+										<p  style="color: red">* {{ message }} </p>
+										{% endfor %}
+										
+										<div class="button-box">
+											<button type="submit"><span>Регистрация</span></button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}

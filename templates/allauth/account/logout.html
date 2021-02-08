@@ -1,0 +1,46 @@
+{% extends 'baseapp/index.html' %}
+
+{% load i18n %}
+
+{% block content %}
+
+<div class="breadcrumb-area gray-bg">
+	<div class="container">
+		<div class="breadcrumb-content">
+			<ul>
+				<li><a href="{% url 'show_index' %}">На главную</a></li>
+				<li class="active"> Выход </li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<!-- blog-area start -->
+<div class="blog-area">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12 col-xl-12 col-md-12">
+				<div class="blog-details-wrapper">
+					<div class="blog-reply-wrapper mt-20" align="center">
+						<h4 class="blog-dec-title">Вы уверены, что хотите выйти?</h4>
+						<form style="margin-top: 20px; margin-bottom: 30px;" action="{% url 'account_logout' %}" method="POST">
+							{% csrf_token %}
+							{% if redirect_field_value %}
+							<input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+							{% endif %}
+							<div class="row">
+								<div class="col-md-12">
+									<div class="text-leave">
+										<input style="margin-top: 5px;" type="submit" value="Выйти">
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>        
+
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'baseapp/index.html' %}
+
+{% load i18n %}
+
+{% block content %}
+
+<div class="breadcrumb-area gray-bg">
+	<div class="container">
+		<div class="breadcrumb-content">
+			<ul>
+				<li><a href="{% url 'show_index' %}">Главная </a></li>
+				<li class="active">Регистрация</li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<div class="login-register-area pt-70 pb-40">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-7 col-md-12 ml-auto mr-auto">
+				<div class="login-register-wrapper">
+					<div class="login-register-tab-list nav">
+						<a>
+							<h4 align="center">Подтвердите свой E-mail адрес</h4>
+						</a>
+					</div>
+					<div class="tab-content">
+						<div class="login-form-container">
+							<div class="login-register-form">
+							    <p align="center">
+							    	Мы отправили вам электронное письмо для проверки. 
+								</p>
+								<p align="center">
+									Перейдите по ссылке, чтобы завершить процесс регистрации.
+								</p>
+								<p align="center" class="mt-30">
+									Пожалуйста, свяжитесь с нами, если вы не получили письмо в течение нескольких минут.
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
